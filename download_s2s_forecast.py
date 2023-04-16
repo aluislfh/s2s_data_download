@@ -12,6 +12,7 @@ def main():
 
         for yyyy in np.array(np.arange(2015,2024,1),dtype='str'):
             for mm in np.array(np.arange(1,13,1),dtype='str'):
+                print(yyyy, mm.zfill(2))
 
                 # sst
                 daily_sst(yyyy, mm.zfill(2), model, name)
