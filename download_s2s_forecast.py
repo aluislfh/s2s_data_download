@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 from ecmwfapi import ECMWFDataServer
 import os, sys, glob
-
+import numpy as np
 
 def main():
 
     wdir = '/home/adrian/NWP/S2S_Forecast/Data_S2S/data'
     os.chdir(wdir)
 
-    for model,name in zip(['ammc','babj','isac','lfpw','cwao','ecmf','rums','anso','rjtd','rksl','kwbc','egrr'],
-                    ['BoM','CMA','CNR-ISAC','CNRM','ECCC','ECMWF','HMCR','IAP-CAS,'JMA','KMA','NCEP','UKMO']):
+    for model,name in zip(['ammc','babj','isac','lfpw','cwao','ecmf','rums','anso','rjtd','rksl','kwbc','egrr'], ['BoM','CMA','CNR-ISAC','CNRM','ECCC','ECMWF','HMCR','IAP-CAS','JMA','KMA','NCEP','UKMO']):
 
         for yyyy in np.array(np.arange(2015,2024,1),dtype='str'):
             for mm in np.array(np.arange(1,13,1),dtype='str'):
