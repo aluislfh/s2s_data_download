@@ -30,7 +30,7 @@ def main():
 
 def daily_sst(yyyy, mm, model, name, wdir):
 
-    if not os.path.exists(wdir + "/sst_"+model+"_"+yyyy+"_"+mm+".grb2")
+    if not os.path.exists(wdir + "/sst_"+model+"_"+yyyy+"_"+mm+".grb2"):
 
         server = ECMWFDataServer()
 
