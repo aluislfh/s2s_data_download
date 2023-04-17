@@ -16,19 +16,19 @@ def main():
 
                 # sst
                 try:
-                    daily_sst(yyyy, mm.zfill(2), model, name)
+                    daily_sst(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
                 # plev
                 try:
-                    fcst_inst_plev(yyyy, mm.zfill(2), model, name)
+                    fcst_inst_plev(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
                 # sfc
                 try:
-                    fcst_inst_sfc(yyyy, mm.zfill(2), model, name)
+                    fcst_inst_sfc(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
