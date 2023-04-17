@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from ecmwfapi import ECMWFDataServer
 import os, sys, glob
+import numpy as np
 
 
 def main():
@@ -15,30 +16,30 @@ def main():
 
                 # sst
                 try:
-                    daily_sst(yyyy, mm.zfill(2), model, name)
+                    daily_sst(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
                 # plev
                 try:
-                    fcst_inst_plev(yyyy, mm.zfill(2), model, name)
+                    fcst_inst_plev(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
                 # sfc
                 try:
-                    fcst_inst_sfc(yyyy, mm.zfill(2), model, name)
+                    fcst_inst_sfc(yyyy, mm.zfill(2), model, name, wdir)
                 except:
                     continue
 
-                #sys.exit()
+                sys.exit()
 
 
 
 
-def daily_sst(yyyy, mm, model, name):
+def daily_sst(yyyy, mm, model, name, wdir):
 
-    if not os.path.exists(wdir + "/sst_"+model+"_"+yyyy+"_"+mm+".grb2"):
+    if not os.path.exists(wdir + "/sst_"+name+"_"+yyyy+"_"+mm+".grb2"):
 
         server = ECMWFDataServer()
 
@@ -61,9 +62,9 @@ def daily_sst(yyyy, mm, model, name):
 
 
 
-def fcst_inst_plev(yyyy, mm, model, name):
+def fcst_inst_plev(yyyy, mm, model, name, wdir):
 
-    if not os.path.exists(wdir + "/temps_"+model+"_"+yyyy+"_"+mm+".grb2"):
+    if not os.path.exists(wdir + "/temps1_"+name+"_"+yyyy+"_"+mm+".grb2"):
 
         server = ECMWFDataServer()
 
@@ -73,7 +74,7 @@ def fcst_inst_plev(yyyy, mm, model, name):
             "date": yyyy+"-"+mm+"-01",
             "expver": "prod",
             "hdate": "1995-01-01/1996-01-01/1997-01-01/1998-01-01/1999-01-01/2000-01-01/2001-01-01/2002-01-01/2003-01-01/2004-01-01/2005-01-01/2006-01-01/2007-01-01/2008-01-01/2009-01-01/2010-01-01/2011-01-01/2012-01-01/2013-01-01/2014-01-01",
-            "levelist": "500/700/850/925",
+            "levelist": "500/700",
             "levtype": "pl",
             "model": "glob",
             "origin": model,
@@ -82,11 +83,35 @@ def fcst_inst_plev(yyyy, mm, model, name):
             "stream": "enfo",
             "time": "00:00:00",
             "type": "cf",
-            "target": "temps_"+name+"_"+yyyy+"_"+mm+".grb2"
+            "target": "temps1_"+name+"_"+yyyy+"_"+mm+".grb2"
         })
 
 
-    if not os.path.exists(wdir + "/uwind_"+model+"_"+yyyy+"_"+mm+".grb2"):
+    if not os.path.exists(wdir + "/temps2_"+name+"_"+yyyy+"_"+mm+".grb2"):
+
+        server = ECMWFDataServer()
+
+        server.retrieve({
+            "class": "s2",
+            "dataset": "s2s",
+            "date": yyyy+"-"+mm+"-01",
+            "expver": "prod",
+            "hdate": "1995-01-01/1996-01-01/1997-01-01/1998-01-01/1999-01-01/2000-01-01/2001-01-01/2002-01-01/2003-01-01/2004-01-01/2005-01-01/2006-01-01/2007-01-01/2008-01-01/2009-01-01/2010-01-01/2011-01-01/2012-01-01/2013-01-01/2014-01-01",
+            "levelist": "850/925",
+            "levtype": "pl",
+            "model": "glob",
+            "origin": model,
+            "param": "130/133",
+            "step": "0/24/48/72/96/120/144/168/192/216/240/264/288/312/336/360/384/408/432/456/480/504/528/552/576/600/624/648/672/696/720/744/768",
+            "stream": "enfo",
+            "time": "00:00:00",
+            "type": "cf",
+            "target": "temps2_"+name+"_"+yyyy+"_"+mm+".grb2"
+        })
+
+
+
+    if not os.path.exists(wdir + "/uwind_"+name+"_"+yyyy+"_"+mm+".grb2"):
             
         server.retrieve({
             "class": "s2",
@@ -108,9 +133,9 @@ def fcst_inst_plev(yyyy, mm, model, name):
 
 
 
-def fcst_inst_sfc(yyyy, mm, model, name):
+def fcst_inst_sfc(yyyy, mm, model, name, wdir):
 
-    if not os.path.exists(wdir + "/rain_"+model+"_"+yyyy+"_"+mm+".grb2"):
+    if not os.path.exists(wdir + "/single_"+name+"_"+yyyy+"_"+mm+".grb2"):
             
         server = ECMWFDataServer()
 
@@ -128,11 +153,11 @@ def fcst_inst_sfc(yyyy, mm, model, name):
             "stream": "enfo",
             "time": "00:00:00",
             "type": "cf",
-            "target": "rain_"+name+"_"+yyyy+"_"+mm+".grb2"
+            "target": "single_"+name+"_"+yyyy+"_"+mm+".grb2"
         })
 
 
-    if not os.path.exists(wdir + "/single_"+model+"_"+yyyy+"_"+mm+".grb2"):
+    if not os.path.exists(wdir + "/rain_"+name+"_"+yyyy+"_"+mm+".grb2"):
             
         server.retrieve({
             "class": "s2",
@@ -148,7 +173,7 @@ def fcst_inst_sfc(yyyy, mm, model, name):
             "stream": "enfo",
             "time": "00:00:00",
             "type": "cf",
-            "target": "single_"+name+"_"+yyyy+"_"+mm+".grb2"
+            "target": "rain_"+name+"_"+yyyy+"_"+mm+".grb2"
         })
 
 
